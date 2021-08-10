@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -13,7 +14,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transaction = Transaction::orderBy('time','DESC')->get();
+        $response = [
+            'message' => 'List transaction order by time',
+            'data' => $transaction
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
