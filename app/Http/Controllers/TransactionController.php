@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
@@ -15,12 +16,21 @@ class TransactionController extends Controller
     public function index()
     {
         $transaction = Transaction::orderBy('time','DESC')->get();
-        $response = [
-            'message' => 'List transaction order by time',
-            'data' => $transaction
-        ];
 
-        return response()->json($response, 200);
+        if ($transaction) {
+            $response = [
+                'message' => 'List transaction order by time',
+                'data' => $transaction
+            ];
+    
+            return response()->json($response, 200);
+        }else{
+            $response = [
+                'message' => 'Data not Found',
+            ];
+    
+            return response()->json($response, 404);
+        }
     }
 
     /**
@@ -31,7 +41,30 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'title'=>['required'],
+            'amount'=>['required','numeric'],
+            'type' =>['required', 'in:expense,revenue']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        try {
+            $transaction = Transaction::create($request->all());
+            $response = [
+                'message' => 'Transaction created',
+                'data' => $transaction
+            ];
+
+            return response()->json($response, 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' =>"Failed". $e->errorInfo
+            ]);
+        }
     }
 
     /**

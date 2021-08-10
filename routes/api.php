@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/transaction', [TransactionController::class, 'index']);
+Route::get('/transaction', [TransactionController::class, 'index']); 
+Route::post('/transaction/create-transaction',[TransactionController::class, 'store']);
