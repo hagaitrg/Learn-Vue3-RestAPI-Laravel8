@@ -15,10 +15,11 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Requesst $request) {
     return $request->user();
 });
 
 Route::get('/transaction', [TransactionController::class, 'index']); 
+Route::get('/transaction/detail-transaction/{id}', [TransactionController::class, 'show']);
 Route::post('/transssaction/create-transaction',[TransactionController::class, 'store']);
 Route::put('/transaction/update-transaction/{id}',[TransactionController::class, 'update']);
