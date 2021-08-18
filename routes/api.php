@@ -21,5 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Requesst $request) {
 
 Route::get('/transaction', [TransactionController::class, 'index']); 
 Route::get('/transaction/detail-transaction/{id}', [TransactionController::class, 'show']);
-Route::post('/transssaction/create-transaction',[TransactionController::class, 'store']);
+Route::post('/transaction/create-transaction',[TransactionController::class, 'store']);
 Route::put('/transaction/update-transaction/{id}',[TransactionController::class, 'update']);
+Route::delete('/transaction/delete-transaction/{id}',[TransactionController::class, 'destroy']);

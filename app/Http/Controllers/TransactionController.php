@@ -140,6 +140,20 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $transaction = Transaction::findOrFail($id);
+
+        try {
+            $transaction->delete();
+            $response = [
+                'message' => 'Transaction deleted',
+            ];
+
+            return response()->json($response, 200);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' =>"Failed". $e->errorInfo
+            ]);
+        }
     }
 }
